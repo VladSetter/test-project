@@ -1,0 +1,48 @@
+<section class="ask-ai-card">
+  <h2>Ask AI</h2>
+  <p class="subtitle">Endpoint: {{ apiUrl }}</p>
+
+  <label for="ask-ai-system">System Message (optional)</label>
+  <textarea
+    id="ask-ai-system"
+    rows="3"
+    placeholder="Set assistant behavior..."
+    [value]="systemMessage()"
+    (input)="setSystemMessage($event)"
+  ></textarea>
+
+  <label for="ask-ai-prompt">Prompt</label>
+  <textarea
+    id="ask-ai-prompt"
+    rows="7"
+    placeholder="Ask something..."
+    [value]="prompt()"
+    (input)="setPrompt($event)"
+  ></textarea>
+
+  <label for="ask-ai-model">Model (optional)</label>
+  <input
+    id="ask-ai-model"
+    type="text"
+    placeholder="llama3.2"
+    [value]="model()"
+    (input)="setModel($event)"
+  />
+
+  <button type="button" [disabled]="state() === 'loading'" (click)="submit()">
+    @if (state() === 'loading') {
+      Sending...
+    } @else {
+      Ask AI
+    }
+  </button>
+
+  @if (state() === 'success') {
+    <h3>Answer</h3>
+    <pre>{{ answer() }}</pre>
+  }
+
+  @if (state() === 'error') {
+    <p class="status error">{{ errorMessage() }}</p>
+  }
+</section>

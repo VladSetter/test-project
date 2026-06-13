@@ -1,0 +1,64 @@
+.login-card {
+  width: 100%;
+  max-width: 28rem;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #d4d4d8;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 0.75rem;
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.subtitle {
+  margin: 0;
+  color: #475569;
+}
+
+label {
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.95rem;
+}
+
+button {
+  width: fit-content;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: #0f766e;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.75;
+  cursor: wait;
+}
+
+.status {
+  margin: 0;
+  font-weight: 600;
+}
+
+.status.error {
+  color: #b91c1c;
+}
+
+.status.success {
+  color: #166534;
+}

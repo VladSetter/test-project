@@ -1,0 +1,61 @@
+.health-card {
+  max-width: 42rem;
+  width: 100%;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #d4d4d8;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.subtitle {
+  margin: 0.5rem 0 1rem;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.status {
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+.loading {
+  color: #0369a1;
+}
+
+.success {
+  color: #166534;
+}
+
+.error {
+  color: #b91c1c;
+}
+
+pre {
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  overflow-x: auto;
+}
+
+button {
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: #0f766e;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #115e59;
+}

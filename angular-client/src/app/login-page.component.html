@@ -1,0 +1,38 @@
+<section class="login-card">
+  <h2>Login</h2>
+  <p class="subtitle">Sign in to continue.</p>
+
+  <label for="login-username">Username</label>
+  <input
+    id="login-username"
+    type="text"
+    placeholder="Enter username"
+    [value]="username()"
+    (input)="setUsername($event)"
+  />
+
+  <label for="login-password">Password</label>
+  <input
+    id="login-password"
+    type="password"
+    placeholder="Enter password"
+    [value]="password()"
+    (input)="setPassword($event)"
+  />
+
+  <button type="button" [disabled]="isSubmitting()" (click)="submit()">
+    @if (isSubmitting()) {
+      Signing in...
+    } @else {
+      Sign In
+    }
+  </button>
+
+  @if (errorMessage()) {
+    <p class="status error">{{ errorMessage() }}</p>
+  }
+
+  @if (successMessage()) {
+    <p class="status success">{{ successMessage() }}</p>
+  }
+</section>

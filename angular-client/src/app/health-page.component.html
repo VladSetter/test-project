@@ -1,0 +1,20 @@
+<section class="health-card">
+  <h2>Backend Health API</h2>
+  <p class="subtitle">Calling: {{ apiUrl }}</p>
+
+  @if (state() === 'loading') {
+    <p class="status loading">Checking backend status...</p>
+  }
+
+  @if (state() === 'success') {
+    <p class="status success">Backend is healthy.</p>
+    <pre>{{ response() | json }}</pre>
+  }
+
+  @if (state() === 'error') {
+    <p class="status error">Could not reach backend.</p>
+    <pre>{{ errorMessage() }}</pre>
+  }
+
+  <button type="button" (click)="checkHealth()">Check Again</button>
+</section>

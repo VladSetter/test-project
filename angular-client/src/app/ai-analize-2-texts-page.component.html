@@ -1,0 +1,57 @@
+<section class="analyze-card">
+  <h2>AI Analize 2 Texts</h2>
+  <p class="subtitle">Endpoint: {{ apiUrl }}</p>
+
+  <label for="analyze-system">System Message (optional)</label>
+  <textarea
+    id="analyze-system"
+    rows="3"
+    placeholder="Set assistant behavior..."
+    [value]="systemMessage()"
+    (input)="setSystemMessage($event)"
+  ></textarea>
+
+  <label for="analyze-text-1">Text 1</label>
+  <textarea
+    id="analyze-text-1"
+    rows="6"
+    placeholder="Paste first text..."
+    [value]="textOne()"
+    (input)="setTextOne($event)"
+  ></textarea>
+
+  <label for="analyze-text-2">Text 2</label>
+  <textarea
+    id="analyze-text-2"
+    rows="6"
+    placeholder="Paste second text..."
+    [value]="textTwo()"
+    (input)="setTextTwo($event)"
+  ></textarea>
+
+  <label for="analyze-model">Model (optional)</label>
+  <input
+    id="analyze-model"
+    type="text"
+    placeholder="llama3.2"
+    [value]="model()"
+    (input)="setModel($event)"
+  />
+
+  <button type="button" [disabled]="state() === 'loading'" (click)="submit()">
+    @if (state() === 'loading') {
+      Sending...
+    } @else {
+      Analyze Texts
+    }
+  </button>
+
+  @if (state() === 'success') {
+    <h3>Analysis</h3>
+    <pre>{{ answer() }}</pre>
+  }
+
+  @if (state() === 'error') {
+    <p class="status error">{{ errorMessage() }}</p>
+  }
+</section>
