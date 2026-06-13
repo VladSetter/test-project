@@ -13,10 +13,12 @@ export interface AskAiResponse {
 }
 
 export interface AskCompareRequest {
-  systemMessage?: string;
+  systemMessage: string;
+  prefixTextOne: string;
+  prefixTextTwo: string;
   textOne: string;
   textTwo: string;
-  model?: string;
+  model: string;
 }
 
 export interface AskCompareResponse {

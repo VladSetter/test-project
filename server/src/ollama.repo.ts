@@ -22,15 +22,14 @@ interface OllamaTagsResponse {
 
 export interface AskComparePayload {
   textOne: string;
+  prefixTextOne: string;
   textTwo: string;
-  systemMessage?: string;
+  prefixTextTwo: string;
+  systemMessage: string;
   model?: string;
 }
 
-export interface AskCompareOptions {
-  systemMessage?: string;
-  model?: string;
-}
+
 
 export interface AskAiPayload {
   systemMessage?: string;
@@ -70,19 +69,17 @@ export class OllamaRepo {
       .filter((modelName): modelName is string => Boolean(modelName));
   }
 
-  async askCompare(
-    textOne: string,
-    textTwo: string,
-    options?: AskCompareOptions,
+  async askCompare(    
+    query: AskComparePayload,
   ): Promise<string> {
     const prompt = [
       "Analyze and compare the following two texts.",
       "",
       "Text 1:",
-      textOne,
+      query.prefixTextOne ? `${query.prefixTextOne}\n${query.textOne}` : query.textOne,
       "",
       "Text 2:",
-      textTwo,
+      query.prefixTextTwo ? `${query.prefixTextTwo}\n${query.textTwo}` : query.textTwo,
       "",
       "Return similarities, differences, and a short conclusion.",
     ].join("\n");
@@ -91,12 +88,12 @@ export class OllamaRepo {
       prompt,
     };
 
-    if (options?.systemMessage) {
-      payload.systemMessage = options.systemMessage;
+    if (query.systemMessage) {
+      payload.systemMessage = query.systemMessage;
     }
 
-    if (options?.model) {
-      payload.model = options.model;
+    if (query.model) {
+      payload.model = query.model;
     }
 
     return this.generateResponse(payload);

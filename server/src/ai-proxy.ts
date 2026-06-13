@@ -39,15 +39,18 @@ aiProxyRouter.post("/ask-compare", async (req, res) => {
     typeof req.body?.systemMessage === "string" ? req.body.systemMessage.trim() : undefined;
   const textOne = typeof req.body?.textOne === "string" ? req.body.textOne.trim() : "";
   const textTwo = typeof req.body?.textTwo === "string" ? req.body.textTwo.trim() : "";
+  const prefixTextOne = typeof req.body?.prefixTextOne === "string" ? req.body.prefixTextOne.trim() : undefined;
+  const prefixTextTwo =  typeof req.body?.prefixTextTwo=== "string" ? req.body.prefixTextTwo.trim() : undefined;
+    typeof req.body?.prefixTextTwo === "string" ? req.body.prefixTextTwo.trim() : undefined;
   const model = typeof req.body?.model === "string" ? req.body.model.trim() : undefined;
 
   if (!textOne || !textTwo) {
     res.status(400).json({ error: "textOne and textTwo are required" });
     return;
   }
-
+S
   try {
-    const answer = await ollamaRepo.askCompare(textOne, textTwo, { systemMessage, model });
+    const answer = await ollamaRepo.askCompare({ textOne, textTwo, systemMessage, prefixTextOne, prefixTextTwo, model });
     res.status(200).json({ answer });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown Ollama error";

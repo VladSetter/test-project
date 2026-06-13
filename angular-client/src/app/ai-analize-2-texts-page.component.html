@@ -1,53 +1,63 @@
-<section class="analyze-card">
-  <h2>AI Analize 2 Texts</h2>
+<mat-card class="analyze-card">
+  <mat-card-header>
+    <mat-card-title>AI Analyze 2 Texts</mat-card-title>
+  </mat-card-header>
 
-  <label for="analyze-system">System Message (optional)</label>
-  <textarea
-    id="analyze-system"
-    rows="3"
-    placeholder="Set assistant behavior..."
-    [value]="systemMessage()"
-    (input)="setSystemMessage($event)"
-  ></textarea>
+  <mat-card-content>
+    <div class="form-grid">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>System Message</mat-label>
+        <textarea id="analyze-system" matInput rows="3" placeholder="Set assistant behavior..."
+          [value]="systemMessage()" (input)="setSystemMessage($event)"></textarea>
+      </mat-form-field>
 
-  <label for="analyze-text-1">Text 1</label>
-  <textarea
-    id="analyze-text-1"
-    rows="6"
-    placeholder="Paste first text..."
-    [value]="textOne()"
-    (input)="setTextOne($event)"
-  ></textarea>
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Prefix for Text 1</mat-label>
+        <input  matInput [(ngModel)]="prefixText1"/>
+      </mat-form-field>  
+      
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Text 1</mat-label>
+        <textarea id="analyze-text-1" matInput rows="6" placeholder="Paste first text..." [value]="textOne()"
+          (input)="setTextOne($event)"></textarea>
+      </mat-form-field>
+   
+  <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Prefix for Text 2</mat-label>
+        <input  matInput [(ngModel)]="prefixText2"/>
+      </mat-form-field>  
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Text 2</mat-label>
+        <textarea id="analyze-text-2" matInput rows="6" placeholder="Paste second text..." [value]="textTwo()"
+          (input)="setTextTwo($event)"></textarea>
+      </mat-form-field>
 
-  <label for="analyze-text-2">Text 2</label>
-  <textarea
-    id="analyze-text-2"
-    rows="6"
-    placeholder="Paste second text..."
-    [value]="textTwo()"
-    (input)="setTextTwo($event)"
-  ></textarea>
+      <app-ollama-model-select id="analyze-model" [value]="model()"
+        (valueChange)="setModel($event)"></app-ollama-model-select>
+    </div>
 
-  <app-ollama-model-select
-    id="analyze-model"
-    [value]="model()"
-    (valueChange)="setModel($event)"
-  ></app-ollama-model-select>
-
-  <button type="button" [disabled]="state() === 'loading'" (click)="submit()">
-    @if (state() === 'loading') {
-      Sending...
-    } @else {
-      Analyze Texts
+    @if (state() === 'success') {
+    <section class="result-card" aria-live="polite">
+      <h3>Analysis</h3>
+      <pre>{{ answer() }}</pre>
+    </section>
     }
-  </button>
 
-  @if (state() === 'success') {
-    <h3>Analysis</h3>
-    <pre>{{ answer() }}</pre>
-  }
-
-  @if (state() === 'error') {
+    @if (state() === 'error') {
     <p class="status error">{{ errorMessage() }}</p>
-  }
-</section>
+    }
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-flat-button color="primary" type="button" [disabled]="state() === 'loading'" (click)="submit()">
+      @if (state() === 'loading') {
+      <span class="button-content">
+        <mat-spinner diameter="18"></mat-spinner>
+        <span>Sending...</span>
+      </span>
+      } @else {
+      Analyze Texts
+      }
+    </button>
+  </mat-card-actions>
+</mat-card>

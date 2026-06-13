@@ -1,12 +1,26 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormsModule } from '@angular/forms';
 import { AIProxyService } from './ai-proxy.service';
 import { OllamaModelSelectComponent } from './ollama-model-select.component';
 
 @Component({
   selector: 'app-ai-analize-2-texts-page',
   standalone: true,
-  imports: [OllamaModelSelectComponent],
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    OllamaModelSelectComponent,
+    FormsModule
+  ],
   templateUrl: './ai-analize-2-texts-page.component.html',
   styleUrl: './ai-analize-2-texts-page.component.scss'
 })
@@ -20,6 +34,8 @@ export class AiAnalize2TextsPageComponent {
   protected readonly answer = signal('');
   protected readonly errorMessage = signal('');
   protected readonly state = signal<'idle' | 'loading' | 'success' | 'error'>('idle');
+  prefixText1 = '';
+  prefixText2 = '';
 
   protected setSystemMessage(event: Event): void {
     const target = event.target as HTMLTextAreaElement;
@@ -41,12 +57,16 @@ export class AiAnalize2TextsPageComponent {
   }
 
   protected submit(): void {
-    const firstText = this.textOne().trim();
-    const secondText = this.textTwo().trim();
+    const systemMessage = this.systemMessage().trim();
+    const prefixTextOne = this.prefixText1.trim();
+    const prefixTextTwo = this.prefixText2.trim();
+    const textOne = this.textOne().trim();
+    const textTwo = this.textTwo().trim();
+    const model = this.model().trim();
 
-    if (!firstText || !secondText) {
+    if (!systemMessage || !prefixTextOne || !prefixTextTwo || !textOne || !textTwo || !model) {
       this.state.set('error');
-      this.errorMessage.set('Both text fields are required.');
+      this.errorMessage.set('All fields are required before sending.');
       this.answer.set('');
       return;
     }
@@ -56,10 +76,12 @@ export class AiAnalize2TextsPageComponent {
 
     this.aiProxyService
       .askCompare({
-        systemMessage: this.systemMessage().trim() || undefined,
-        textOne: firstText,
-        textTwo: secondText,
-        model: this.model().trim() || undefined
+        systemMessage,
+        prefixTextOne,
+        prefixTextTwo,
+        textOne,
+        textTwo,
+        model
       })
       .subscribe({
         next: (data) => {
