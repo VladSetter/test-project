@@ -12,6 +12,14 @@ interface OllamaGenerateRequest {
   stream: boolean;
 }
 
+interface OllamaTagEntry {
+  name: string;
+}
+
+interface OllamaTagsResponse {
+  models?: OllamaTagEntry[];
+}
+
 export interface AskComparePayload {
   textOne: string;
   textTwo: string;
@@ -41,6 +49,25 @@ export class OllamaRepo {
 
   async askAi(payload: AskAiPayload): Promise<string> {
     return this.generateResponse(payload);
+  }
+
+  getDefaultModel(): string {
+    return this.defaultModel;
+  }
+
+  async listModels(): Promise<string[]> {
+    const response = await fetch(`${this.baseUrl}/api/tags`);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Ollama list models failed (${response.status}): ${errorText}`);
+    }
+
+    const data = (await response.json()) as OllamaTagsResponse;
+    const models = Array.isArray(data.models) ? data.models : [];
+    return models
+      .map((model) => model.name?.trim())
+      .filter((modelName): modelName is string => Boolean(modelName));
   }
 
   async askCompare(

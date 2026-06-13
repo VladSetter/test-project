@@ -1,20 +1,18 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
-
-interface AskAiResponse {
-  answer: string;
-}
+import { AIProxyService } from './ai-proxy.service';
+import { OllamaModelSelectComponent } from './ollama-model-select.component';
 
 @Component({
   selector: 'app-ask-ai-page',
   standalone: true,
+  imports: [OllamaModelSelectComponent],
   templateUrl: './ask-ai-page.component.html',
   styleUrl: './ask-ai-page.component.scss'
 })
 export class AskAiPageComponent {
-  private readonly http = inject(HttpClient);
+  private readonly aiProxyService = inject(AIProxyService);
 
-  protected readonly apiUrl = 'http://localhost:8080/api/private/ai-proxy/ask-ai';
   protected readonly systemMessage = signal('');
   protected readonly prompt = signal('');
   protected readonly model = signal('');
@@ -32,9 +30,8 @@ export class AskAiPageComponent {
     this.prompt.set(target.value);
   }
 
-  protected setModel(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    this.model.set(target.value);
+  protected setModel(model: string): void {
+    this.model.set(model);
   }
 
   protected submit(): void {
@@ -50,8 +47,8 @@ export class AskAiPageComponent {
     this.state.set('loading');
     this.errorMessage.set('');
 
-    this.http
-      .post<AskAiResponse>(this.apiUrl, {
+    this.aiProxyService
+      .askAi({
         systemMessage: this.systemMessage().trim() || undefined,
         prompt: trimmedPrompt,
         model: this.model().trim() || undefined

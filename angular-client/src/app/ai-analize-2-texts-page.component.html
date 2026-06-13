@@ -1,6 +1,5 @@
 <section class="analyze-card">
   <h2>AI Analize 2 Texts</h2>
-  <p class="subtitle">Endpoint: {{ apiUrl }}</p>
 
   <label for="analyze-system">System Message (optional)</label>
   <textarea
@@ -29,14 +28,11 @@
     (input)="setTextTwo($event)"
   ></textarea>
 
-  <label for="analyze-model">Model (optional)</label>
-  <input
+  <app-ollama-model-select
     id="analyze-model"
-    type="text"
-    placeholder="llama3.2"
     [value]="model()"
-    (input)="setModel($event)"
-  />
+    (valueChange)="setModel($event)"
+  ></app-ollama-model-select>
 
   <button type="button" [disabled]="state() === 'loading'" (click)="submit()">
     @if (state() === 'loading') {

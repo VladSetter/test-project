@@ -11,13 +11,23 @@ aiProxyRouter.post("/ask-ai", async (req, res) => {
   const model = typeof req.body?.model === "string" ? req.body.model.trim() : undefined;
 
   if (!prompt) {
-    res.status(400).json({ error: "prompt is required"!!! });
+    res.status(400).json({ error: "prompt is required" });
     return;
   }
 
   try {
     const answer = await ollamaRepo.askAi({ systemMessage, prompt, model });
     res.status(200).json({ answer });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown Ollama error";
+    res.status(502).json({ error: message });
+  }
+});
+
+aiProxyRouter.get("/models", async (_req, res) => {
+  try {
+    const models = await ollamaRepo.listModels();
+    res.status(200).json({ models, defaultModel: ollamaRepo.getDefaultModel() });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown Ollama error";
     res.status(502).json({ error: message });

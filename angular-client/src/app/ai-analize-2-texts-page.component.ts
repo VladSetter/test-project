@@ -1,20 +1,18 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
-
-interface AnalyzeTextsResponse {
-  answer: string;
-}
+import { AIProxyService } from './ai-proxy.service';
+import { OllamaModelSelectComponent } from './ollama-model-select.component';
 
 @Component({
   selector: 'app-ai-analize-2-texts-page',
   standalone: true,
+  imports: [OllamaModelSelectComponent],
   templateUrl: './ai-analize-2-texts-page.component.html',
   styleUrl: './ai-analize-2-texts-page.component.scss'
 })
 export class AiAnalize2TextsPageComponent {
-  private readonly http = inject(HttpClient);
+  private readonly aiProxyService = inject(AIProxyService);
 
-  protected readonly apiUrl = 'http://localhost:8080/api/private/ai-proxy/ask-compare';
   protected readonly systemMessage = signal('');
   protected readonly textOne = signal('');
   protected readonly textTwo = signal('');
@@ -38,9 +36,8 @@ export class AiAnalize2TextsPageComponent {
     this.textTwo.set(target.value);
   }
 
-  protected setModel(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    this.model.set(target.value);
+  protected setModel(model: string): void {
+    this.model.set(model);
   }
 
   protected submit(): void {
@@ -57,8 +54,8 @@ export class AiAnalize2TextsPageComponent {
     this.state.set('loading');
     this.errorMessage.set('');
 
-    this.http
-      .post<AnalyzeTextsResponse>(this.apiUrl, {
+    this.aiProxyService
+      .askCompare({
         systemMessage: this.systemMessage().trim() || undefined,
         textOne: firstText,
         textTwo: secondText,

@@ -1,0 +1,15 @@
+.model-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+select {
+  flex: 1;
+  min-height: 2.5rem;
+}
+
+.refresh-button {
+  min-height: 2.5rem;
+  white-space: nowrap;
+}

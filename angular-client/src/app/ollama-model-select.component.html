@@ -1,0 +1,26 @@
+<label [for]="id">{{ label }}</label>
+
+<div class="model-row">
+  <select
+    [id]="id"
+    [value]="value"
+    [disabled]="state() === 'loading'"
+    (change)="onModelChange($event)"
+  >
+    <option value="">
+      Auto ({{ defaultModel() || 'server default' }})
+    </option>
+
+    @for (model of models(); track model) {
+      <option [value]="model">{{ model }}</option>
+    }
+  </select>
+
+  <button type="button" class="refresh-button" [disabled]="state() === 'loading'" (click)="refreshModels()">
+    Refresh
+  </button>
+</div>
+
+@if (state() === 'error') {
+  <p class="status error">{{ errorMessage() }}</p>
+}

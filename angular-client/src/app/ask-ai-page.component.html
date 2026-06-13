@@ -1,6 +1,5 @@
 <section class="ask-ai-card">
   <h2>Ask AI</h2>
-  <p class="subtitle">Endpoint: {{ apiUrl }}</p>
 
   <label for="ask-ai-system">System Message (optional)</label>
   <textarea
@@ -20,14 +19,11 @@
     (input)="setPrompt($event)"
   ></textarea>
 
-  <label for="ask-ai-model">Model (optional)</label>
-  <input
+  <app-ollama-model-select
     id="ask-ai-model"
-    type="text"
-    placeholder="llama3.2"
     [value]="model()"
-    (input)="setModel($event)"
-  />
+    (valueChange)="setModel($event)"
+  ></app-ollama-model-select>
 
   <button type="button" [disabled]="state() === 'loading'" (click)="submit()">
     @if (state() === 'loading') {
