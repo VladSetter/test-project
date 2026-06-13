@@ -11,7 +11,7 @@ aiProxyRouter.post("/ask-ai", async (req, res) => {
   const model = typeof req.body?.model === "string" ? req.body.model.trim() : undefined;
 
   if (!prompt) {
-    res.status(400).json({ error: "prompt is required" });
+    res.status(400).json({ error: "prompt is required"!!! });
     return;
   }
 
