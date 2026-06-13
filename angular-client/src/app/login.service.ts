@@ -55,7 +55,7 @@ export class LoginService {
     if (!usernameHash || !passwordHash) {
       return;
     }
-
+S
     if (!this.isValidCredentialHashes(usernameHash, passwordHash)) {
       localStorage.removeItem(this.credentialUsernameStorageKey);
       localStorage.removeItem(this.credentialPasswordStorageKey);
